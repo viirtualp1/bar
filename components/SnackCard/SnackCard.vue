@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" max-width="374">
+  <v-card class="mx-auto" @click="openSnackModal">
     <template v-slot:loader="{ isActive }">
       <v-progress-linear
         :active="isActive"
@@ -9,25 +9,57 @@
       ></v-progress-linear>
     </template>
 
-    <v-img :cover="true" height="250" :src="snack.image" />
+    <v-img
+      v-if="snack.images.length > 0"
+      :src="snack.images[0]"
+      height="250"
+      cover
+    />
 
-    <v-card-item class="mb-0 pt-0">
-      <v-card-title>
+    <template #title>
+      <v-card-title class="drink-card__title">
         {{ snack.name }}
 
-        <v-icon color="error" icon="mdi-fire-circle" size="small" />
+        <v-icon
+          v-if="snack.discount"
+          color="error"
+          icon="mdi-fire-circle"
+          size="small"
+        />
       </v-card-title>
-    </v-card-item>
+    </template>
 
     <v-card-text>
-      <div class="text-subtitle-1 font-weight-bold">{{ snack.price }}</div>
+      <div class="text-subtitle-1 mt-3">
+        {{ snack.description }}
+      </div>
+
+      <div class="text-subtitle-2 font-weight-bold">{{ snack.price }} ₽</div>
+
+      <v-chip
+        v-for="location in snack.location"
+        class="drink-card__location mr-2"
+        color="info"
+        text-color="white"
+      >
+        <v-icon icon="mdi-glass-mug-variant" class="mr-1"></v-icon>
+        {{ getLocation(location) }}
+      </v-chip>
+
+      <snack-modal
+        v-model="isSnackModalOpen"
+        :snack="snack"
+        @close="closeSnackModal"
+      />
     </v-card-text>
   </v-card>
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue'
 import { SnackData } from '@/types/product'
+import { locations } from '@/services/drink'
+import SnackModal from '@/components/modals/SnackModal/SnackModal.vue'
+import useSnackModal from '@/components/modals/SnackModal/useSnackModal'
 
 defineProps({
   snack: {
@@ -35,6 +67,15 @@ defineProps({
     default: null,
   },
 })
+
+const emit = defineEmits({
+  'open:modal': () => undefined,
+})
+
+const { isSnackModalOpen, openSnackModal, closeSnackModal } = useSnackModal()
+
+const getLocation = (location: number) =>
+  locations[location as keyof typeof locations]
 </script>
 
 <style lang="scss" src="./SnackCard.scss"></style>

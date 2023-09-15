@@ -1,0 +1,27 @@
+@import 'assets/media';
+
+.drink-modal {
+  width: 100%;
+
+  @include media-sm-up {
+    max-width: 800px;
+  }
+
+  &__card {
+    @include media-sm-down {
+      border-radius: 0 !important;
+    }
+  }
+
+  &__header {
+    display: flex;
+  }
+
+  &__close {
+    .v-icon {
+      &::before {
+        font-size: 18px;
+      }
+    }
+  }
+}

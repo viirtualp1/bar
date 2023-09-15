@@ -1,19 +1,27 @@
+export type ProductType = 'Drink' | 'Snack'
+
+export enum ProductEnum {
+  DRINK = 'Drink',
+  SNACK = 'Snack',
+}
+
 export interface DrinkData {
   id: number
   name: string
-  image?: String
+  images: string[]
   price: number
-  location: String[]
+  location: number[]
   discount?: number
-  description?: String
+  description?: string
   density?: number
   strength?: number
 }
 
 export interface SnackData {
   id: number
-  name: String
-  image?: String
+  name: string
+  images: string[]
+  description: string
   price: number
   location: number[]
   discount?: number
