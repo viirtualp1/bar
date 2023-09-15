@@ -1,11 +1,11 @@
 @import 'assets/media';
 
 .images-slider {
-  height: 200px;
+  height: 200px !important;
   margin-top: 22px;
 
   @include media-sm-up {
-    height: 400px;
+    height: 400px !important;
   }
 
   &__image {
