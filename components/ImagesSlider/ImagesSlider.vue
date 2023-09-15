@@ -2,7 +2,6 @@
   <v-carousel
     class="images-slider"
     cycle
-    height="400"
     hide-delimiter-background
     show-arrows="hover"
   >
