@@ -1,18 +1,10 @@
 @import 'assets/media';
 
 .images-slider {
+  max-width: 340px;
   height: 200px !important;
-  margin-top: 22px;
-
-  @include media-sm-up {
-    height: 400px !important;
-  }
 
   &__image {
     border-radius: 22px;
-  }
-
-  .v-img__img--contain {
-    object-fit: cover;
   }
 }

@@ -1,40 +1,23 @@
 <template>
-  <v-dialog
-    class="snack-modal"
-    v-model="currentValue"
-    :fullscreen="$vuetify.display.smAndDown"
-  >
+  <product-modal v-model="currentValue">
     <v-card class="snack-modal__card">
-      <v-card-title class="snack-modal__header">
+      <product-title>
         {{ snack.name }}
-        <v-spacer />
-
-        <v-btn class="snack-modal__close" size="x-small" icon @click="close">
-          <v-icon size="x-small">mdi-close</v-icon>
-        </v-btn>
-      </v-card-title>
+      </product-title>
 
       <v-card-text>
         <div class="mb-4">{{ snack.description }}</div>
 
-        <div class="snack-modal__tags">
-          <div>
-            <v-chip color="info" v-for="shop in snack.location">
-              Бар {{ shop }}
-            </v-chip>
-          </div>
+        <bar-locations :locations="snack.location" />
 
-          <images-slider :photos="snack.images" />
-        </div>
+        <images-slider v-if="snack.images.length > 0" :photos="snack.images" />
       </v-card-text>
     </v-card>
-  </v-dialog>
+  </product-modal>
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue'
 import { SnackData } from '@/types/product'
-import ImagesSlider from '@/components/ImagesSlider/ImagesSlider.vue'
 
 const props = defineProps({
   value: {
@@ -55,12 +38,11 @@ const currentValue = ref(false)
 
 watch(
   () => props.value,
-  () => (currentValue.value = props.value),
+  () => {
+    emit('close')
+    currentValue.value = props.value
+  },
 )
-
-function close() {
-  emit('close')
-}
 </script>
 
 <style lang="scss" src="./SnackModal.scss"></style>

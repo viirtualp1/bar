@@ -6,11 +6,7 @@
     show-arrows="hover"
   >
     <v-carousel-item v-for="(photo, idx) in photos" :key="idx">
-      <v-sheet height="100%">
-        <div class="d-flex fill-height justify-center align-center">
-          <v-img class="images-slider__image" :src="photo" />
-        </div>
-      </v-sheet>
+      <v-img class="images-slider__image" :src="photo" cover />
     </v-carousel-item>
   </v-carousel>
 </template>

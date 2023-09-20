@@ -43,8 +43,12 @@ a {
   }
 }
 
-.v-chip,
-.v-chip__content {
-  display: inline-flex !important;
-  align-self: center !important;
+.v-chip {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+}
+
+.v-carousel__controls {
+  top: 312px;
 }

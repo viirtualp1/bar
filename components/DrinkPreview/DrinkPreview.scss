@@ -1,0 +1,16 @@
+.drink-preview {
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+
+  &__price {
+    font-weight: 600;
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+}

@@ -17,12 +17,32 @@
     justify-content: space-between;
   }
 
-  &__edit-link {
-    display: flex;
+  &__description {
+    font-size: 16px;
+    margin-top: 6px;
+    margin-bottom: 12px;
+    line-height: 1.75rem;
+    letter-spacing: 0.009375em;
   }
 
-  &__location {
-    padding: 0 6px !important;
-    margin-top: 12px !important;
+  &__price {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  &__discount {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  &__discount-without {
+    text-decoration: line-through;
+    font-size: 16px;
+  }
+
+  &__discount-with {
+    margin-bottom: 0;
   }
 }

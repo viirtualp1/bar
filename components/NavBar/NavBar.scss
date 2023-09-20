@@ -1,0 +1,14 @@
+@import 'assets/media';
+
+.nav-bar {
+  height: 74px;
+  padding: 12px 24px;
+  color: #000;
+  border: 1px solid #eee;
+  font-size: 20px;
+  font-weight: 600;
+
+  @include media-sm-up {
+    padding: 12px 48px;
+  }
+}

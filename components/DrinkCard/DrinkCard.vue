@@ -1,5 +1,5 @@
 <template>
-  <v-card class="drink-card mx-auto" @click="openDrinkModal">
+  <v-card class="drink-card" @click="openDrinkModal">
     <template v-slot:loader="{ isActive }">
       <v-progress-linear
         :active="isActive"
@@ -30,28 +30,24 @@
     </template>
 
     <v-card-text>
-      <div class="text-subtitle-1 mt-3">
+      <div v-if="!drink.inStock" class="drink-card__price">Нет в наличии</div>
+      <div class="drink-card__discount" v-else-if="drink.discount">
+        <div class="drink-card__discount-with drink-card__price">
+          {{ priceWithDiscount }}
+        </div>
+
+        <div class="drink-card__discount-without">
+          {{ drink.priceLittleSize }} ₽
+        </div>
+      </div>
+
+      <div v-else class="drink-card__price">{{ drink.priceLittleSize }} ₽</div>
+
+      <div class="drink-card__description">
         {{ drink.description }}
       </div>
 
-      <div class="text-subtitle-2 font-weight-bold">{{ drink.price }} ₽</div>
-
-      <div class="mt-2">
-        <v-chip class="mr-2" color="error">
-          Крепкость {{ drink.strength }}
-        </v-chip>
-        <v-chip color="success"> Плотность {{ drink.density }} </v-chip>
-      </div>
-
-      <v-chip
-        v-for="location in drink.location"
-        class="drink-card__location mr-2"
-        color="info"
-        text-color="white"
-      >
-        <v-icon icon="mdi-glass-mug-variant" class="mr-1"></v-icon>
-        {{ getLocation(location) }}
-      </v-chip>
+      <drink-characteristics small :drink="drink" />
     </v-card-text>
 
     <drink-modal
@@ -63,12 +59,11 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue'
-import { useRouter } from '#app'
-import { DrinkData } from '~/types/product'
-import { locations } from '~/services/drink'
-import DrinkModal from '@/components/modals/DrinkModal/DrinkModal.vue'
+import { DrinkData } from '@/types/product'
+import { getPriceWithDiscount, locations } from '@/services/drink'
+
 import useDrinkModal from '@/components/modals/DrinkModal/useDrinkModal'
+import DrinkModal from '@/components/modals/DrinkModal/DrinkModal.vue'
 
 const props = defineProps({
   drink: {
@@ -77,12 +72,15 @@ const props = defineProps({
   },
 })
 
-const router = useRouter()
-
 const { isDrinkModalOpen, openDrinkModal, closeDrinkModal } = useDrinkModal()
 
-const getLocation = (location: number) =>
-  locations[location as keyof typeof locations]
+const priceWithDiscount = computed(() => {
+  if (!props.drink.discount) {
+    return 0
+  }
+
+  return getPriceWithDiscount(props.drink.priceLittleSize, props.drink.discount)
+})
 </script>
 
 <style lang="scss" src="./DrinkCard.scss"></style>

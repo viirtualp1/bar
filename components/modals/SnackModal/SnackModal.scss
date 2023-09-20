@@ -12,16 +12,4 @@
       border-radius: 0 !important;
     }
   }
-
-  &__header {
-    display: flex;
-  }
-
-  &__close {
-    .v-icon {
-      &::before {
-        font-size: 18px;
-      }
-    }
-  }
 }

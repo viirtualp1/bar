@@ -1,47 +1,62 @@
 <template>
-  <v-dialog
-    class="drink-modal"
-    v-model="currentValue"
-    :fullscreen="$vuetify.display.smAndDown"
-  >
+  <product-modal v-model="currentValue">
     <v-card class="drink-modal__card">
-      <v-card-title class="drink-modal__header">
+      <product-title @close="close">
         {{ drink.name }}
-        <v-spacer />
-
-        <v-btn class="drink-modal__close" size="x-small" icon @click="close">
-          <v-icon size="x-small">mdi-close</v-icon>
-        </v-btn>
-      </v-card-title>
+      </product-title>
 
       <v-card-text>
-        <div class="mb-4">{{ drink.description }}</div>
+        <div v-if="!drink.inStock" class="drink-card__price">Нет в наличии</div>
+        <div v-else-if="!drink.priceBigSize" class="drink-card__price">
+          {{ drink.priceLittleSize }} ₽
+        </div>
 
-        <div class="drink-modal__tags">
-          <v-chip color="error" class="mb-3">
-            Крепкость {{ drink.strength }}
-          </v-chip>
-          <v-chip color="success" class="mb-2">
-            Плотность {{ drink.density }}
-          </v-chip>
+        <div class="drink-modal__description">{{ drink.description }}</div>
 
-          <div>
-            <v-chip color="info" v-for="shop in drink.location">
-              Бар {{ shop }}
-            </v-chip>
+        <div
+          class="drink-modal__discount"
+          v-if="drink.inStock && drink.discount && drink.priceLittleSize"
+        >
+          <div class="drink-modal__discount-with drink-card__price">
+            {{ priceLittleWithDiscount }}
           </div>
 
-          <images-slider :photos="drink.images" />
+          <div class="drink-modal__discount-without">
+            {{ drink.priceLittleSize }} ₽
+          </div>
+
+          <span class="drink-modal__size">за 0,33</span>
         </div>
+
+        <div
+          class="drink-modal__discount"
+          v-if="drink.discount && drink.priceBigSize"
+        >
+          <div class="drink-modal__discount-with drink-card__price">
+            {{ priceBigWithDiscount }}
+          </div>
+
+          <div class="drink-modal__discount-without">
+            {{ drink.priceBigSize }} ₽
+          </div>
+
+          <span class="drink-modal__size">за 0,5</span>
+        </div>
+
+        <images-slider v-if="drink.images.length > 0" :photos="drink.images" />
+
+        <drink-characteristics
+          class="drink-modal__characteristics"
+          :drink="drink"
+        />
       </v-card-text>
     </v-card>
-  </v-dialog>
+  </product-modal>
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue'
 import { DrinkData } from '@/types/product'
-import ImagesSlider from '@/components/ImagesSlider/ImagesSlider.vue'
+import { getPriceWithDiscount } from '@/services/drink'
 
 const props = defineProps({
   value: {
@@ -58,14 +73,30 @@ const emit = defineEmits({
   close: () => undefined,
 })
 
-const swiperRef = ref()
-
 const currentValue = ref(false)
+
+const nuxt = useNuxtApp()
 
 watch(
   () => props.value,
   () => (currentValue.value = props.value),
 )
+
+const priceLittleWithDiscount = computed(() => {
+  if (!props.drink.discount) {
+    return 0
+  }
+
+  return getPriceWithDiscount(props.drink.priceLittleSize, props.drink.discount)
+})
+
+const priceBigWithDiscount = computed(() => {
+  if (!props.drink.discount) {
+    return 0
+  }
+
+  return getPriceWithDiscount(props.drink.priceBigSize, props.drink.discount)
+})
 
 function close() {
   emit('close')

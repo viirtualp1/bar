@@ -1,5 +1,4 @@
-import { SnackCreateData, SnackData } from '@/types/product'
-import { addDoc, collection, getDocs, query } from 'firebase/firestore'
+import { collection, getDocs, query } from 'firebase/firestore'
 
 export function getSnacks() {
   const { $db: db } = useNuxtApp()
@@ -7,14 +6,8 @@ export function getSnacks() {
   return getDocs(query(collection(db, 'snacks')))
 }
 
-export function getSnack(id: number) {}
+export function getKitchenFood() {
+  const { $db: db } = useNuxtApp()
 
-export function createSnack(data: SnackCreateData) {
-  const { $db } = useNuxtApp()
-
-  return addDoc(collection($db, 'snacks'), data)
+  return getDocs(query(collection(db, 'food')))
 }
-
-export function updateSnack(data: SnackData) {}
-
-export function deleteSnack(id: number) {}

@@ -1,0 +1,9 @@
+@import 'assets/media';
+
+.product-modal {
+  width: 100%;
+
+  @include media-sm-up {
+    max-width: 430px;
+  }
+}

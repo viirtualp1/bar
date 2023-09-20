@@ -13,15 +13,39 @@
     }
   }
 
-  &__header {
-    display: flex;
+  &__chip {
+    width: fit-content;
   }
 
-  &__close {
-    .v-icon {
-      &::before {
-        font-size: 18px;
-      }
-    }
+  &__size {
+    font-size: 12px;
+  }
+
+  &__chips {
+    display: flex;
+    margin-bottom: 12px;
+  }
+
+  &__description {
+    margin-bottom: 8px;
+  }
+
+  &__discount {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  &__discount-without {
+    text-decoration: line-through;
+    font-size: 16px;
+  }
+
+  &__discount-with {
+    margin-bottom: 0;
+  }
+
+  &__characteristics {
+    margin-top: 12px;
   }
 }
