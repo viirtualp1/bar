@@ -1,9 +1,8 @@
 <template>
   <nav class="nav-bar">
-    <nuxt-link to="/">
+    <nuxt-link class="nav-bar__logo" to="/about">
       <img src="@/assets/images/logo.png" alt="logo" width="124" height="48" />
     </nuxt-link>
-    <nuxt-link to="/about"> О нас </nuxt-link>
   </nav>
 </template>
 
