@@ -1,5 +1,7 @@
 <template>
-  <div class="about-page"></div>
+  <v-container>
+    <h1>О нас</h1>
+  </v-container>
 </template>
 
 <script setup lang="ts">
