@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from '@firebase/firestore'
 import { getAnalytics } from 'firebase/analytics'
+import { getStorage } from '@firebase/storage'
 
 export default defineNuxtPlugin(() => {
   const {
@@ -27,6 +28,7 @@ export default defineNuxtPlugin(() => {
   const app = initializeApp(firebaseConfig)
 
   const db = getFirestore(app)
+  const storage = getStorage(app)
   const analytics = getAnalytics(app)
 
   return {
@@ -34,6 +36,7 @@ export default defineNuxtPlugin(() => {
       app,
       db,
       analytics,
+      storage,
     },
   }
 })

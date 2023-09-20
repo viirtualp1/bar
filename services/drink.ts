@@ -1,9 +1,16 @@
 import { collection, query, getDocs } from 'firebase/firestore'
+import { getDownloadURL, ref } from 'firebase/storage'
 
 export function getDrinks() {
   const { $db: db } = useNuxtApp()
 
   return getDocs(query(collection(db, 'drinks')))
+}
+
+export function getDrinkImage(id: string, fileName: string) {
+  const { $storage: storage } = useNuxtApp()
+
+  return getDownloadURL(ref(storage, `drinks/${id}/${fileName}`))
 }
 
 export const locations = ['Бар', 'Доставка']

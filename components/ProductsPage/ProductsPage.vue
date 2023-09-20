@@ -13,16 +13,8 @@
       </template>
 
       <template v-else>
-        <template v-if="currentTab === 0">
-          <v-col cols="12">
-            <product-filters
-              v-model:current-filter="currentFilter"
-              drink
-              @update:filter="onUpdateFilter"
-            />
-          </v-col>
-
-          <v-col v-for="drink in showedDrinks" :key="drink.id" cols="12" md="4">
+        <template v-for="drink in drinks" :key="drink.id">
+          <v-col v-if="currentTab === 0 && drink.name" cols="12" md="4">
             <drink-card :drink="drink" />
           </v-col>
         </template>
@@ -45,9 +37,9 @@
           </v-col>
         </template>
 
-        <template v-for="snack in kitchenFood" :key="snack.id">
-          <v-col v-if="currentTab === 4 && snack.name" cols="12" md="4">
-            <snack-card :snack="snack" />
+        <template v-for="food in kitchenFood" :key="food.id">
+          <v-col v-if="currentTab === 4 && food.name" cols="12" md="4">
+            <snack-card :snack="food" />
           </v-col>
         </template>
 
@@ -106,34 +98,28 @@
 </template>
 
 <script setup lang="ts">
-import { getDrinks } from '@/services/drink'
-import { getSnacks, getKitchenFood } from '@/services/snack'
+import { getDrinks, getDrinkImage } from '@/services/drink'
+import {
+  getKitchenFood,
+  getSnacks,
+  getFoodImage,
+  getSnackImage,
+} from '@/services/snack'
 
 import { DrinkData, ProductEnum, SnackData } from '@/types/product'
 
 import useFilteredDrinks from '@/composables/useFilteredDrinks'
 import useFilteredProducts from '@/composables/useFilteredProducts'
 
+const isLoading = ref(false)
+const currentTab = ref(0)
+
 const drinks = ref<DrinkData[]>([])
 const snacks = ref<SnackData[]>([])
 const kitchenFood = ref<SnackData[]>([])
 
-const isLoading = ref(false)
-const currentTab = ref(0)
-const currentFilter = ref('all')
-
 const { nonAlcoholicDrinks, draftDrinks } = useFilteredDrinks(drinks)
 const { discountProducts } = useFilteredProducts(drinks, snacks)
-
-const showedDrinks = computed(() => {
-  if (currentFilter.value === 'all') {
-    return drinks.value
-  }
-
-  return drinks.value.filter((drink) => {
-    return drink.types.includes(currentFilter.value)
-  })
-})
 
 async function fetchData() {
   isLoading.value = true
@@ -161,11 +147,55 @@ function formatDrinks() {
   drinks.value = (drinks.value as any).docs.map((doc: any) => {
     return doc.data()
   })
+
+  const drinksNew = drinks.value.map(async (drink) => {
+    let images: string[] = []
+
+    for (const image of drink.images) {
+      let imageUrl = await getDrinkImage(drink.id, image)
+
+      images.push(imageUrl)
+    }
+
+    return {
+      ...drink,
+      images,
+    }
+  })
+
+  drinks.value = []
+  drinksNew.forEach(async (drinkNew) => {
+    drinkNew.then((res) => {
+      drinks.value.push(res)
+    })
+  })
 }
 
 function formatSnacks() {
   snacks.value = (snacks.value as any).docs.map((doc: any) => {
     return doc.data()
+  })
+
+  const snacksNew = snacks.value.map(async (snack) => {
+    let images: string[] = []
+
+    for (const image of snack.images) {
+      let imageUrl = await getSnackImage(snack.id, image)
+
+      images.push(imageUrl)
+    }
+
+    return {
+      ...snack,
+      images,
+    }
+  })
+
+  snacks.value = []
+  snacksNew.forEach(async (snackNew) => {
+    snackNew.then((res) => {
+      snacks.value.push(res)
+    })
   })
 }
 
@@ -173,10 +203,28 @@ function formatKitchenFoods() {
   kitchenFood.value = (kitchenFood.value as any).docs.map((doc: any) => {
     return doc.data()
   })
-}
 
-function onUpdateFilter(filter: string) {
-  currentFilter.value = filter
+  const kitchenFoodNew = kitchenFood.value.map(async (food) => {
+    let images: string[] = []
+
+    for (const image of food.images) {
+      let imageUrl = await getFoodImage(food.id, image)
+
+      images.push(imageUrl)
+    }
+
+    return {
+      ...food,
+      images,
+    }
+  })
+
+  kitchenFood.value = []
+  kitchenFoodNew.forEach(async (foodNew) => {
+    foodNew.then((res) => {
+      snacks.value.push(res)
+    })
+  })
 }
 
 onMounted(async () => await fetchData())
