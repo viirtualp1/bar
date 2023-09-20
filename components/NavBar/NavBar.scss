@@ -1,6 +1,10 @@
 @import 'assets/media';
 
 .nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
   height: 74px;
   padding: 12px 24px;
   color: #000;
