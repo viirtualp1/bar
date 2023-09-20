@@ -6,11 +6,7 @@ export function getDrinks() {
   return getDocs(query(collection(db, 'drinks')))
 }
 
-export const locations = {
-  1: 'Бар 1',
-  2: 'Бар 2',
-  3: 'Бар 3',
-}
+export const locations = ['Бар', 'Доставка']
 
 export const types = {
   draft: 'Разливное пиво',
