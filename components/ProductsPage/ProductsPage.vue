@@ -99,12 +99,7 @@
 
 <script setup lang="ts">
 import { getDrinks, getDrinkImage } from '@/services/drink'
-import {
-  getKitchenFood,
-  getSnacks,
-  getFoodImage,
-  getSnackImage,
-} from '@/services/snack'
+import { getKitchenFood, getSnacks, getSnackImage } from '@/services/snack'
 
 import { DrinkData, ProductEnum, SnackData } from '@/types/product'
 
@@ -208,7 +203,7 @@ function formatKitchenFoods() {
     let images: string[] = []
 
     for (const image of food.images) {
-      let imageUrl = await getFoodImage(food.id, image)
+      let imageUrl = await getSnackImage(food.id, image)
 
       images.push(imageUrl)
     }

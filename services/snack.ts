@@ -18,9 +18,3 @@ export function getSnackImage(id: string, fileName: string) {
 
   return getDownloadURL(ref(storage, `snacks/${id}/${fileName}`))
 }
-
-export function getFoodImage(id: string, fileName: string) {
-  const { $storage: storage } = useNuxtApp()
-
-  return listAll(ref(storage, `food/${id}/${fileName}`))
-}
