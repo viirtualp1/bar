@@ -6,6 +6,12 @@
     margin-bottom: 12px;
   }
 
+  &__locations {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
   &__location {
     margin-top: 12px;
   }

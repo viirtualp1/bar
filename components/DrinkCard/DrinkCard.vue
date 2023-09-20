@@ -47,7 +47,7 @@
         {{ drink.description }}
       </div>
 
-      <drink-characteristics small :drink="drink" />
+      <drink-characteristics :drink="drink" />
     </v-card-text>
 
     <drink-modal

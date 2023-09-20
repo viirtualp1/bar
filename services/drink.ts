@@ -17,6 +17,9 @@ export const types = {
   banned: 'Баночное пиво',
   butter: 'Сливочное пиво',
   'non-alcoholic': 'Безалкогольное пиво',
+  filtered: 'Фильтрованное',
+  light: 'Светлое',
+  dark: 'Темное',
 }
 
 export function getPriceWithDiscount(price: number, discount: number) {

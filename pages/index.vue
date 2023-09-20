@@ -8,6 +8,6 @@
 import ProductsPage from '@/components/ProductsPage/ProductsPage.vue'
 
 useSeoMeta({
-  title: 'Бар',
+  title: 'Три волчонка',
 })
 </script>

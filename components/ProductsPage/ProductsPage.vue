@@ -13,8 +13,16 @@
       </template>
 
       <template v-else>
-        <template v-for="drink in drinks" :key="drink.id">
-          <v-col v-if="currentTab === 0 && drink.name" cols="12" md="4">
+        <template v-if="currentTab === 0">
+          <v-col cols="12">
+            <product-filters
+              v-model:current-filter="currentFilter"
+              drink
+              @update:filter="onUpdateFilter"
+            />
+          </v-col>
+
+          <v-col v-for="drink in showedDrinks" :key="drink.id" cols="12" md="4">
             <drink-card :drink="drink" />
           </v-col>
         </template>
@@ -106,15 +114,26 @@ import { DrinkData, ProductEnum, SnackData } from '@/types/product'
 import useFilteredDrinks from '@/composables/useFilteredDrinks'
 import useFilteredProducts from '@/composables/useFilteredProducts'
 
-const isLoading = ref(false)
-const currentTab = ref(0)
-
 const drinks = ref<DrinkData[]>([])
 const snacks = ref<SnackData[]>([])
 const kitchenFood = ref<SnackData[]>([])
 
+const isLoading = ref(false)
+const currentTab = ref(0)
+const currentFilter = ref('all')
+
 const { nonAlcoholicDrinks, draftDrinks } = useFilteredDrinks(drinks)
 const { discountProducts } = useFilteredProducts(drinks, snacks)
+
+const showedDrinks = computed(() => {
+  if (currentFilter.value === 'all') {
+    return drinks.value
+  }
+
+  return drinks.value.filter((drink) => {
+    return drink.types.includes(currentFilter.value)
+  })
+})
 
 async function fetchData() {
   isLoading.value = true
@@ -154,6 +173,10 @@ function formatKitchenFoods() {
   kitchenFood.value = (kitchenFood.value as any).docs.map((doc: any) => {
     return doc.data()
   })
+}
+
+function onUpdateFilter(filter: string) {
+  currentFilter.value = filter
 }
 
 onMounted(async () => await fetchData())
