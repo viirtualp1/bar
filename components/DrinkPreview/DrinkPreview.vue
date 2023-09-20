@@ -18,7 +18,7 @@
       class="ml-0 mt-4 font-weight-bold"
       color="info"
       size="2"
-      v-for="(shop, idx) in drink.location"
+      v-for="(shop, idx) in drink.locations"
       :key="idx"
     >
       Бар {{ shop }}

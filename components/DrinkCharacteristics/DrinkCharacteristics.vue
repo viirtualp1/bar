@@ -21,7 +21,7 @@
 
     <div class="drink-characteristics__locations">
       <v-chip
-        v-for="location in drink.location"
+        v-for="location in drink.locations"
         class="drink-characteristics__location"
         color="teal"
         text-color="white"

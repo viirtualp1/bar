@@ -37,7 +37,7 @@
       </div>
 
       <v-chip
-        v-for="location in snack.location"
+        v-for="location in snack.locations"
         class="snack-card__location mr-2"
         color="info"
         text-color="white"

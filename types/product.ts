@@ -12,7 +12,7 @@ export interface ProductData {
   images: string[]
   description?: string
   discount?: number
-  location: number[]
+  locations: number[]
   types: string[]
   inStock: boolean
 }
