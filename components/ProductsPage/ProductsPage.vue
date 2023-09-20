@@ -217,7 +217,7 @@ function formatKitchenFoods() {
   kitchenFood.value = []
   kitchenFoodNew.forEach(async (foodNew) => {
     foodNew.then((res) => {
-      snacks.value.push(res)
+      kitchenFood.value.push(res)
     })
   })
 }
