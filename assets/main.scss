@@ -56,3 +56,11 @@ a {
 .v-btn--variant-outlined {
   border-color: #c4c4c4 !important;
 }
+
+.v-bottom-navigation {
+  overflow: auto !important;
+}
+
+.v-bottom-navigation__content {
+  justify-content: normal !important;
+}
