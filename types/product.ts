@@ -1,9 +1,10 @@
-export type ProductType = 'Drink' | 'Snack' | 'Food'
+export type ProductType = 'Drink' | 'Snack' | 'Food' | 'Discount'
 
 export enum ProductEnum {
   DRINK = 'Drink',
   SNACK = 'Snack',
   FOOD = 'Food',
+  DISCOUNT = 'Discount',
 }
 
 export interface ProductData {
@@ -23,7 +24,6 @@ export type DrinkData = ProductData & {
   priceBigSize: number
   density?: number
   strength?: number
-  isFiltered: boolean
 }
 
 export type SnackData = ProductData & {
@@ -33,5 +33,10 @@ export type SnackData = ProductData & {
 
 export type FoodData = ProductData & {
   type: ProductEnum.FOOD
+  price: number
+}
+
+export type DiscountData = ProductData & {
+  type: ProductEnum.DISCOUNT
   price: number
 }

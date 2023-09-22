@@ -13,16 +13,6 @@
       </template>
 
       <template v-else>
-        <template v-if="currentTab === 0">
-          <v-col cols="12">
-            <product-filters
-              v-model:current-filter="currentFilter"
-              drink
-              @update:filter="onUpdateFilter"
-            />
-          </v-col>
-        </template>
-
         <template v-for="drink in showedDrinks" :key="drink.id">
           <v-col v-if="currentTab === 0 && drink.name" cols="12" md="4">
             <drink-card :drink="drink" />
@@ -55,11 +45,7 @@
 
         <template v-for="product in discountProducts" :key="product.id">
           <v-col v-if="currentTab === 5 && product" cols="12" md="4">
-            <drink-card
-              v-if="product.type === ProductEnum.DRINK"
-              :drink="product"
-            />
-            <snack-card v-else :snack="product" />
+            <snack-card :snack="product" />
           </v-col>
         </template>
       </template>
@@ -109,39 +95,26 @@
 
 <script setup lang="ts">
 import { getDrinks, getDrinkImage } from '@/services/drink'
-import { getKitchenFood, getSnacks, getSnackImage } from '@/services/snack'
+import {
+  getKitchenFood,
+  getSnacks,
+  getSnackImage,
+  getDiscountProducts,
+} from '@/services/snack'
 
-import { DrinkData, ProductEnum, SnackData } from '@/types/product'
+import { DrinkData, SnackData } from '@/types/product'
 
 import useFilteredDrinks from '@/composables/useFilteredDrinks'
-import useFilteredProducts from '@/composables/useFilteredProducts'
 
 const isLoading = ref(false)
 const currentTab = ref(0)
-const currentFilter = ref('all')
 
 const drinks = ref<DrinkData[]>([])
 const snacks = ref<SnackData[]>([])
 const kitchenFood = ref<SnackData[]>([])
+const discountProducts = ref<SnackData[]>([])
 
 const { nonAlcoholicDrinks, draftDrinks } = useFilteredDrinks(drinks)
-const { discountProducts } = useFilteredProducts(drinks, snacks)
-
-const showedDrinks = computed(() => {
-  const drinksToShowed = drinks.value.filter((drink) => {
-    return (
-      !drink.types.includes('draft') && !drink.types.includes('non-alcoholic')
-    )
-  })
-
-  if (currentFilter.value === 'all') {
-    return drinksToShowed
-  }
-
-  return drinksToShowed.filter((drink) => {
-    return drink.types.includes(currentFilter.value)
-  })
-})
 
 async function fetchData() {
   isLoading.value = true
@@ -158,12 +131,24 @@ async function fetchData() {
     // @ts-ignore
     kitchenFood.value = await getKitchenFood()
     formatKitchenFoods()
+
+    // @ts-ignore
+    discountProducts.value = await getDiscountProducts()
+    formatDiscountProducts()
   } catch (err) {
     console.error(err)
   } finally {
     isLoading.value = false
   }
 }
+
+const showedDrinks = computed(() => {
+  return drinks.value.filter((drink) => {
+    return (
+      !drink.types.includes('draft') && !drink.types.includes('non-alcoholic')
+    )
+  })
+})
 
 function formatDrinks() {
   drinks.value = (drinks.value as any).docs.map((doc: any) => {
@@ -263,8 +248,38 @@ function formatKitchenFoods() {
   })
 }
 
-function onUpdateFilter(filter: string) {
-  currentFilter.value = filter
+function formatDiscountProducts() {
+  discountProducts.value = (discountProducts.value as any).docs.map(
+    (doc: any) => {
+      return doc.data()
+    },
+  )
+
+  const productsNew = discountProducts.value.map(async (product) => {
+    let images: string[] = []
+
+    for (const image of product.images) {
+      try {
+        let imageUrl = await getSnackImage(product.id, image)
+        images.push(imageUrl)
+      } catch (err) {
+        images.push(image)
+        console.error(err)
+      }
+    }
+
+    return {
+      ...product,
+      images,
+    }
+  })
+
+  discountProducts.value = []
+  productsNew.forEach(async (productNew) => {
+    productNew.then((res) => {
+      discountProducts.value.push(res)
+    })
+  })
 }
 
 onMounted(async () => await fetchData())
