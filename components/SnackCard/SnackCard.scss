@@ -19,6 +19,24 @@
     letter-spacing: 0.009375em;
   }
 
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  &__locations {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  &__location {
+    margin-top: 12px;
+  }
+
+  &__chip,
   &__location {
     width: fit-content;
   }

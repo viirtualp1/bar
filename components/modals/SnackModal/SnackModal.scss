@@ -12,4 +12,19 @@
       border-radius: 0 !important;
     }
   }
+
+  &__locations {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  &__location {
+    margin-top: 12px;
+  }
+
+  &__chip,
+  &__location {
+    width: fit-content;
+  }
 }

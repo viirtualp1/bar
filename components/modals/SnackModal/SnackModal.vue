@@ -8,7 +8,23 @@
       <v-card-text>
         <div class="mb-4">{{ snack.description }}</div>
 
-        <bar-locations :locations="snack.locations" />
+        <div class="snack-modal__locations">
+          <v-chip
+            v-for="location in snack.locations"
+            class="snack-modal__location"
+            color="teal"
+            text-color="white"
+          >
+            <v-icon
+              v-if="location === 0"
+              icon="mdi-glass-mug-variant"
+              class="mr-1"
+            />
+            <v-icon v-if="location === 1" icon="mdi-car-back" class="mr-1" />
+
+            {{ getLocation(location) }}
+          </v-chip>
+        </div>
 
         <images-slider v-if="snack.images.length > 0" :photos="snack.images" />
       </v-card-text>
@@ -18,6 +34,7 @@
 
 <script setup lang="ts">
 import { SnackData } from '@/types/product'
+import { locations } from '~/services/drink'
 
 const props = defineProps({
   value: {
@@ -43,6 +60,9 @@ watch(
     currentValue.value = props.value
   },
 )
+
+const getLocation = (location: number) =>
+  locations[location as keyof typeof locations]
 </script>
 
 <style lang="scss" src="./SnackModal.scss"></style>

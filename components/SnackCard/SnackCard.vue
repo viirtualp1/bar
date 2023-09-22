@@ -36,15 +36,23 @@
         {{ snack.description }}
       </div>
 
-      <v-chip
-        v-for="location in snack.locations"
-        class="snack-card__location mr-2"
-        color="info"
-        text-color="white"
-      >
-        <v-icon icon="mdi-glass-mug-variant" class="mr-1"></v-icon>
-        {{ getLocation(location) }}
-      </v-chip>
+      <div class="snack-card__locations">
+        <v-chip
+          v-for="location in snack.locations"
+          class="snack-card__location"
+          color="teal"
+          text-color="white"
+        >
+          <v-icon
+            v-if="location === 0"
+            icon="mdi-glass-mug-variant"
+            class="mr-1"
+          />
+          <v-icon v-if="location === 1" icon="mdi-car-back" class="mr-1" />
+
+          {{ getLocation(location) }}
+        </v-chip>
+      </div>
 
       <snack-modal
         v-model="isSnackModalOpen"

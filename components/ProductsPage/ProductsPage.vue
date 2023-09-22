@@ -13,7 +13,17 @@
       </template>
 
       <template v-else>
-        <template v-for="drink in drinks" :key="drink.id">
+        <template v-if="currentTab === 0">
+          <v-col cols="12">
+            <product-filters
+              v-model:current-filter="currentFilter"
+              drink
+              @update:filter="onUpdateFilter"
+            />
+          </v-col>
+        </template>
+
+        <template v-for="drink in showedDrinks" :key="drink.id">
           <v-col v-if="currentTab === 0 && drink.name" cols="12" md="4">
             <drink-card :drink="drink" />
           </v-col>
@@ -72,7 +82,7 @@
         <v-btn>
           <v-icon>mdi-beer</v-icon>
 
-          Пиво безалк
+          Безалк напитки
         </v-btn>
 
         <v-btn>
@@ -108,6 +118,7 @@ import useFilteredProducts from '@/composables/useFilteredProducts'
 
 const isLoading = ref(false)
 const currentTab = ref(0)
+const currentFilter = ref('all')
 
 const drinks = ref<DrinkData[]>([])
 const snacks = ref<SnackData[]>([])
@@ -115,6 +126,22 @@ const kitchenFood = ref<SnackData[]>([])
 
 const { nonAlcoholicDrinks, draftDrinks } = useFilteredDrinks(drinks)
 const { discountProducts } = useFilteredProducts(drinks, snacks)
+
+const showedDrinks = computed(() => {
+  const drinksToShowed = drinks.value.filter((drink) => {
+    return (
+      !drink.types.includes('draft') && !drink.types.includes('non-alcoholic')
+    )
+  })
+
+  if (currentFilter.value === 'all') {
+    return drinksToShowed
+  }
+
+  return drinksToShowed.filter((drink) => {
+    return drink.types.includes(currentFilter.value)
+  })
+})
 
 async function fetchData() {
   isLoading.value = true
@@ -234,6 +261,10 @@ function formatKitchenFoods() {
       kitchenFood.value.push(res)
     })
   })
+}
+
+function onUpdateFilter(filter: string) {
+  currentFilter.value = filter
 }
 
 onMounted(async () => await fetchData())
