@@ -53,6 +53,8 @@
     <drink-modal
       v-model="isDrinkModalOpen"
       :drink="drink"
+      :bottle="bottle"
+      :boules="boules"
       @close="closeDrinkModal"
     />
   </v-card>
@@ -61,15 +63,23 @@
 <script setup lang="ts">
 import { DrinkData } from '@/types/product'
 import { getPriceWithDiscount } from '@/services/drink'
+import { truncate } from '@/utils/text'
 
 import useDrinkModal from '@/components/modals/DrinkModal/useDrinkModal'
 import DrinkModal from '@/components/modals/DrinkModal/DrinkModal.vue'
-import { truncate } from '@/utils/text'
 
 const props = defineProps({
   drink: {
     type: Object as PropType<DrinkData>,
     default: null,
+  },
+  boules: {
+    type: Boolean,
+    default: false,
+  },
+  bottle: {
+    type: Boolean,
+    default: false,
   },
 })
 

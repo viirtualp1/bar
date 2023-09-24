@@ -13,14 +13,20 @@ export function getKitchenFood() {
   return getDocs(query(collection(db, 'food')))
 }
 
-export function getSnackImage(id: string, fileName: string) {
-  const { $storage: storage } = useNuxtApp()
-
-  return getDownloadURL(ref(storage, `snacks/${id}/${fileName}`))
-}
-
 export function getDiscountProducts() {
   const { $db: db } = useNuxtApp()
 
   return getDocs(query(collection(db, 'discount')))
+}
+
+export function getServices() {
+  const { $db: db } = useNuxtApp()
+
+  return getDocs(query(collection(db, 'services')))
+}
+
+export function getSnackImage(id: string, fileName: string) {
+  const { $storage: storage } = useNuxtApp()
+
+  return getDownloadURL(ref(storage, `snacks/${id}/${fileName}`))
 }

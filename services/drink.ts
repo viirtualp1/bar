@@ -7,6 +7,18 @@ export function getDrinks() {
   return getDocs(query(collection(db, 'drinks')))
 }
 
+export function getBottle() {
+  const { $db: db } = useNuxtApp()
+
+  return getDocs(query(collection(db, 'bottle')))
+}
+
+export function getBoules() {
+  const { $db: db } = useNuxtApp()
+
+  return getDocs(query(collection(db, 'boules')))
+}
+
 export function getDrinkImage(id: string, fileName: string) {
   const { $storage: storage } = useNuxtApp()
 

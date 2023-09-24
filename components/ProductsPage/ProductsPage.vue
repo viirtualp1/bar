@@ -31,21 +31,39 @@
           </v-col>
         </template>
 
+        <template v-for="drink in bottleDrinks" :key="drink.id">
+          <v-col v-if="currentTab === 3 && drink.name" cols="12" md="4">
+            <drink-card :drink="drink" bottle />
+          </v-col>
+        </template>
+
+        <template v-for="drink in boulesDrinks" :key="drink.id">
+          <v-col v-if="currentTab === 4 && drink.name" cols="12" md="4">
+            <drink-card :drink="drink" boules />
+          </v-col>
+        </template>
+
         <template v-for="snack in snacks" :key="snack.id">
-          <v-col v-if="currentTab === 3 && snack.name" cols="12" md="4">
+          <v-col v-if="currentTab === 5 && snack.name" cols="12" md="4">
             <snack-card :snack="snack" />
           </v-col>
         </template>
 
         <template v-for="food in kitchenFood" :key="food.id">
-          <v-col v-if="currentTab === 4 && food.name" cols="12" md="4">
-            <snack-card :snack="food" />
+          <v-col v-if="currentTab === 6 && food.name" cols="12" md="4">
+            <snack-card :snack="food" food />
           </v-col>
         </template>
 
         <template v-for="product in discountProducts" :key="product.id">
-          <v-col v-if="currentTab === 5 && product" cols="12" md="4">
-            <snack-card :snack="product" />
+          <v-col v-if="currentTab === 7 && product" cols="12" md="4">
+            <snack-card :snack="product" discount />
+          </v-col>
+        </template>
+
+        <template v-for="service in services" :key="service.id">
+          <v-col v-if="currentTab === 8 && service" cols="12" md="4">
+            <snack-card :snack="service" service />
           </v-col>
         </template>
       </template>
@@ -72,6 +90,18 @@
         </v-btn>
 
         <v-btn>
+          <v-icon>mdi-bottle-tonic</v-icon>
+
+          Бутылочное пиво
+        </v-btn>
+
+        <v-btn>
+          <v-icon>mdi-bottle-soda-classic</v-icon>
+
+          Були
+        </v-btn>
+
+        <v-btn>
           <v-icon>mdi-food</v-icon>
 
           Закуски
@@ -88,18 +118,30 @@
 
           Скидки
         </v-btn>
+
+        <v-btn>
+          <v-icon>mdi-room-service</v-icon>
+
+          Услуги
+        </v-btn>
       </v-bottom-navigation>
     </v-layout>
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { getDrinks, getDrinkImage } from '@/services/drink'
+import {
+  getDrinks,
+  getDrinkImage,
+  getBottle,
+  getBoules,
+} from '@/services/drink'
 import {
   getKitchenFood,
   getSnacks,
   getSnackImage,
   getDiscountProducts,
+  getServices,
 } from '@/services/snack'
 
 import { DrinkData, SnackData } from '@/types/product'
@@ -110,9 +152,12 @@ const isLoading = ref(false)
 const currentTab = ref(0)
 
 const drinks = ref<DrinkData[]>([])
+const bottleDrinks = ref<DrinkData[]>([])
+const boulesDrinks = ref<DrinkData[]>([])
 const snacks = ref<SnackData[]>([])
 const kitchenFood = ref<SnackData[]>([])
 const discountProducts = ref<SnackData[]>([])
+const services = ref<SnackData[]>([])
 
 const { nonAlcoholicDrinks, draftDrinks } = useFilteredDrinks(drinks)
 
@@ -135,6 +180,18 @@ async function fetchData() {
     // @ts-ignore
     discountProducts.value = await getDiscountProducts()
     formatDiscountProducts()
+
+    // @ts-ignore
+    services.value = await getServices()
+    formatServices()
+
+    // @ts-ignore
+    boulesDrinks.value = await getBoules()
+    formatBoulesDrinks()
+
+    // @ts-ignore
+    bottleDrinks.value = await getBottle()
+    formatBottleDrinks()
   } catch (err) {
     console.error(err)
   } finally {
@@ -278,6 +335,102 @@ function formatDiscountProducts() {
   productsNew.forEach(async (productNew) => {
     productNew.then((res) => {
       discountProducts.value.push(res)
+    })
+  })
+}
+
+function formatServices() {
+  services.value = (services.value as any).docs.map((doc: any) => {
+    return doc.data()
+  })
+
+  const servicesNew = services.value.map(async (service) => {
+    let images: string[] = []
+
+    for (const image of service.images) {
+      try {
+        let imageUrl = await getSnackImage(service.id, image)
+        images.push(imageUrl)
+      } catch (err) {
+        images.push(image)
+        console.error(err)
+      }
+    }
+
+    return {
+      ...service,
+      images,
+    }
+  })
+
+  services.value = []
+  servicesNew.forEach(async (serviceNew) => {
+    serviceNew.then((res) => {
+      services.value.push(res)
+    })
+  })
+}
+
+function formatBottleDrinks() {
+  bottleDrinks.value = (bottleDrinks.value as any).docs.map((doc: any) => {
+    return doc.data()
+  })
+
+  const bottleDrinksNew = bottleDrinks.value.map(async (bottleDrink) => {
+    let images: string[] = []
+
+    for (const image of bottleDrink.images) {
+      try {
+        let imageUrl = await getDrinkImage(bottleDrink.id, image)
+        images.push(imageUrl)
+      } catch (err) {
+        images.push(image)
+        console.error(err)
+      }
+    }
+
+    return {
+      ...bottleDrink,
+      images,
+    }
+  })
+
+  bottleDrinks.value = []
+  bottleDrinksNew.forEach(async (bottleDrinkNew) => {
+    bottleDrinkNew.then((res) => {
+      bottleDrinks.value.push(res)
+    })
+  })
+}
+
+function formatBoulesDrinks() {
+  boulesDrinks.value = (boulesDrinks.value as any).docs.map((doc: any) => {
+    return doc.data()
+  })
+
+  const boulesDrinksNew = boulesDrinks.value.map(async (boulesDrink) => {
+    let images: string[] = []
+
+    for (const image of boulesDrink.images) {
+      try {
+        let imageUrl = await getDrinkImage(boulesDrink.id, image)
+        images.push(imageUrl)
+      } catch (err) {
+        images.push(image)
+        console.error(err)
+      }
+    }
+
+    return {
+      ...boulesDrink,
+      images,
+    }
+  })
+
+  boulesDrinks.value = []
+  boulesDrinksNew.forEach(async (boulesDrinkNew) => {
+    boulesDrinkNew.then((res) => {
+      boulesDrinks.value.push(res)
     })
   })
 }
