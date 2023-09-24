@@ -1,3 +1,10 @@
 .product-title {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  white-space: normal;
+
+  &__text {
+    max-width: 300px;
+  }
 }

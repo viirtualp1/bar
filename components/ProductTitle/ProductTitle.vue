@@ -1,8 +1,8 @@
 <template>
   <v-card-title class="product-title">
-    <slot />
-
-    <v-spacer />
+    <div class="product-title__text">
+      <slot />
+    </div>
 
     <close-button @close="close" />
   </v-card-title>
