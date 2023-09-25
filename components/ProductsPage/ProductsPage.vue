@@ -31,13 +31,13 @@
           </v-col>
         </template>
 
-        <template v-for="drink in bottleDrinks" :key="drink.id">
+        <template v-for="drink in bottle" :key="drink.id">
           <v-col v-if="currentTab === 3 && drink.name" cols="12" md="4">
             <drink-card :drink="drink" bottle />
           </v-col>
         </template>
 
-        <template v-for="drink in boulesDrinks" :key="drink.id">
+        <template v-for="drink in boules" :key="drink.id">
           <v-col v-if="currentTab === 4 && drink.name" cols="12" md="4">
             <drink-card :drink="drink" boules />
           </v-col>
@@ -152,14 +152,15 @@ const isLoading = ref(false)
 const currentTab = ref(0)
 
 const drinks = ref<DrinkData[]>([])
-const bottleDrinks = ref<DrinkData[]>([])
-const boulesDrinks = ref<DrinkData[]>([])
+const bottle = ref<DrinkData[]>([])
+const boules = ref<DrinkData[]>([])
 const snacks = ref<SnackData[]>([])
 const kitchenFood = ref<SnackData[]>([])
 const discountProducts = ref<SnackData[]>([])
 const services = ref<SnackData[]>([])
 
-const { nonAlcoholicDrinks, draftDrinks } = useFilteredDrinks(drinks)
+const { nonAlcoholicDrinks, draftDrinks, boulesDrinks, bottleDrinks } =
+  useFilteredDrinks(drinks)
 
 async function fetchData() {
   isLoading.value = true
@@ -186,11 +187,11 @@ async function fetchData() {
     formatServices()
 
     // @ts-ignore
-    boulesDrinks.value = await getBoules()
+    boules.value = await getBoules()
     formatBoulesDrinks()
 
     // @ts-ignore
-    bottleDrinks.value = await getBottle()
+    bottle.value = await getBottle()
     formatBottleDrinks()
   } catch (err) {
     console.error(err)
@@ -202,7 +203,10 @@ async function fetchData() {
 const showedDrinks = computed(() => {
   return drinks.value.filter((drink) => {
     return (
-      !drink.types.includes('draft') && !drink.types.includes('non-alcoholic')
+      !drink.types.includes('draft') &&
+      !drink.types.includes('non-alcoholic') &&
+      !drink.types.includes('boules') &&
+      !drink.types.includes('bottle')
     )
   })
 })
@@ -372,11 +376,11 @@ function formatServices() {
 }
 
 function formatBottleDrinks() {
-  bottleDrinks.value = (bottleDrinks.value as any).docs.map((doc: any) => {
+  bottle.value = (bottle.value as any).docs.map((doc: any) => {
     return doc.data()
   })
 
-  const bottleDrinksNew = bottleDrinks.value.map(async (bottleDrink) => {
+  const bottleDrinksNew = bottle.value.map(async (bottleDrink) => {
     let images: string[] = []
 
     for (const image of bottleDrink.images) {
@@ -395,20 +399,20 @@ function formatBottleDrinks() {
     }
   })
 
-  bottleDrinks.value = []
+  bottle.value = [...bottleDrinks.value]
   bottleDrinksNew.forEach(async (bottleDrinkNew) => {
     bottleDrinkNew.then((res) => {
-      bottleDrinks.value.push(res)
+      bottle.value.push(res)
     })
   })
 }
 
 function formatBoulesDrinks() {
-  boulesDrinks.value = (boulesDrinks.value as any).docs.map((doc: any) => {
+  boules.value = (boules.value as any).docs.map((doc: any) => {
     return doc.data()
   })
 
-  const boulesDrinksNew = boulesDrinks.value.map(async (boulesDrink) => {
+  const boulesDrinksNew = boules.value.map(async (boulesDrink) => {
     let images: string[] = []
 
     for (const image of boulesDrink.images) {
@@ -427,10 +431,10 @@ function formatBoulesDrinks() {
     }
   })
 
-  boulesDrinks.value = []
+  boules.value = [...boulesDrinks.value]
   boulesDrinksNew.forEach(async (boulesDrinkNew) => {
     boulesDrinkNew.then((res) => {
-      boulesDrinks.value.push(res)
+      boules.value.push(res)
     })
   })
 }

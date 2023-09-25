@@ -14,5 +14,22 @@ export default function useFilteredDrinks(drinks: Ref<DrinkData[]>) {
     })
   })
 
-  return { draftDrinks, nonAlcoholicDrinks }
+  const boulesDrinks = computed(() => {
+    return drinks.value.filter((drink) => {
+      return drink.types.includes('boules')
+    })
+  })
+
+  const bottleDrinks = computed(() => {
+    return drinks.value.filter((drink) => {
+      return drink.types.includes('bottle')
+    })
+  })
+
+  return {
+    draftDrinks,
+    nonAlcoholicDrinks,
+    boulesDrinks,
+    bottleDrinks,
+  }
 }
