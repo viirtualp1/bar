@@ -79,10 +79,6 @@ defineProps({
   },
 })
 
-const emit = defineEmits({
-  'open:modal': () => undefined,
-})
-
 const { isSnackModalOpen, openSnackModal, closeSnackModal } = useSnackModal()
 
 const getLocation = (location: number) =>

@@ -34,7 +34,9 @@
 
 <script setup lang="ts">
 import { SnackData } from '@/types/product'
-import { locations } from '~/services/drink'
+import { locations } from '@/services/drink'
+
+import ProductModal from '@/components/Product/ProductModal/ProductModal.vue'
 
 const props = defineProps({
   value: {

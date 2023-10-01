@@ -1,0 +1,10 @@
+.drink-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+
+  &__type {
+    width: fit-content;
+  }
+}

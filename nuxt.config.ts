@@ -9,5 +9,11 @@ export default defineNuxtConfig({
   build: {
     transpile: ['vuetify'],
   },
-  link: [{ rel: 'icon', type: 'image/png', href: '@/assets/images/logo.png' }],
+  app: {
+    head: {
+      link: [
+        { rel: 'icon', type: 'image/png', href: '@/assets/images/logo.png' },
+      ],
+    },
+  },
 })

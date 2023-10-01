@@ -1,0 +1,19 @@
+@import 'assets/media';
+
+.drink-card {
+  transition: 0.5s ease;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  @include media-sm-up {
+    opacity: 0.8;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

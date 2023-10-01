@@ -29,26 +29,7 @@
       </v-card-title>
     </template>
 
-    <v-card-text>
-      <div v-if="!drink.inStock" class="drink-card__price">Нет в наличии</div>
-      <div class="drink-card__discount" v-else-if="drink.discount">
-        <div class="drink-card__discount-with drink-card__price">
-          {{ priceWithDiscount }}
-        </div>
-
-        <div class="drink-card__discount-without">
-          {{ drink.priceLittleSize }} ₽
-        </div>
-      </div>
-
-      <div v-else class="drink-card__price">{{ drink.priceLittleSize }} ₽</div>
-
-      <div class="drink-card__description">
-        {{ truncate(drink.description) }}
-      </div>
-
-      <drink-characteristics :drink="drink" />
-    </v-card-text>
+    <drink-characteristics :drink="drink" />
 
     <drink-modal
       v-model="isDrinkModalOpen"
@@ -62,13 +43,12 @@
 
 <script setup lang="ts">
 import { DrinkData } from '@/types/product'
-import { getPriceWithDiscount } from '@/services/drink'
-import { truncate } from '@/utils/text'
 
 import useDrinkModal from '@/components/modals/DrinkModal/useDrinkModal'
 import DrinkModal from '@/components/modals/DrinkModal/DrinkModal.vue'
+import DrinkCharacteristics from '../DrinkCharacteristics/DrinkCharacteristics.vue'
 
-const props = defineProps({
+defineProps({
   drink: {
     type: Object as PropType<DrinkData>,
     default: null,
@@ -84,14 +64,6 @@ const props = defineProps({
 })
 
 const { isDrinkModalOpen, openDrinkModal, closeDrinkModal } = useDrinkModal()
-
-const priceWithDiscount = computed(() => {
-  if (!props.drink.discount) {
-    return 0
-  }
-
-  return getPriceWithDiscount(props.drink.priceLittleSize, props.drink.discount)
-})
 </script>
 
 <style lang="scss" src="./DrinkCard.scss"></style>

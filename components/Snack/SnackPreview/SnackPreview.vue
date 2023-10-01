@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { SnackData } from '@/types/product'
+import { SnackData } from '~/types/product'
 
 defineProps({
   snack: {

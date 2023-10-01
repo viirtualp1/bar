@@ -58,6 +58,8 @@
 import { DrinkData } from '@/types/product'
 import { getPriceWithDiscount } from '@/services/drink'
 
+import ProductModal from '@/components/Product/ProductModal/ProductModal.vue'
+
 const props = defineProps({
   value: {
     type: Boolean,

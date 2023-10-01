@@ -47,4 +47,4 @@ function filterVariant(filter: string) {
 }
 </script>
 
-<style lang="scss" src="./ProductFilters.scss"></style>
+<style lang="scss" src="ProductFilters.scss"></style>

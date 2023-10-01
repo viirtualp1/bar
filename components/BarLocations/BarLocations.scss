@@ -1,4 +1,8 @@
 .bar-locations {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
   &__location {
     width: fit-content;
   }

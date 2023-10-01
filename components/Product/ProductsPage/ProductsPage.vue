@@ -148,6 +148,9 @@ import { DrinkData, SnackData } from '@/types/product'
 
 import useFilteredDrinks from '@/composables/useFilteredDrinks'
 
+import DrinkCard from '@/components/Drink/DrinkCard/DrinkCard.vue'
+import SnackCard from '@/components/Snack/SnackCard/SnackCard.vue'
+
 const isLoading = ref(false)
 const currentTab = ref(0)
 

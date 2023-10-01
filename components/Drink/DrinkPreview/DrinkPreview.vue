@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { DrinkData } from '@/types/product'
+import { DrinkData } from '~/types/product'
 
 defineProps({
   drink: {
@@ -37,4 +37,4 @@ defineProps({
 })
 </script>
 
-<style lang="scss" src="./DrinkPreview.scss"></style>
+<style lang="scss" src="DrinkPreview.scss"></style>

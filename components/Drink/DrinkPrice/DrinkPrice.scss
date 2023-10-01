@@ -1,0 +1,22 @@
+.drink-price {
+  &__text {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  &__discount {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  &__without {
+    text-decoration: line-through;
+    font-size: 16px;
+  }
+
+  &__with {
+    margin-bottom: 0;
+  }
+}
