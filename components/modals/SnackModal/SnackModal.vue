@@ -6,6 +6,11 @@
       </product-title>
 
       <v-card-text>
+        <div v-if="!snack.inStock" class="snack-modal__price">
+          Нет в наличии
+        </div>
+        <div v-else class="snack-modal__price">{{ snack.price }} ₽</div>
+
         <div class="mb-4">{{ snack.description }}</div>
 
         <div class="snack-modal__locations">
@@ -36,6 +41,7 @@
 import { SnackData } from '@/types/product'
 import { locations } from '@/services/drink'
 
+import ProductTitle from '@/components/Product/ProductTitle/ProductTitle.vue'
 import ProductModal from '@/components/Product/ProductModal/ProductModal.vue'
 
 const props = defineProps({
