@@ -42,11 +42,10 @@
 </template>
 
 <script setup lang="ts">
-import { DrinkData } from '@/types/product'
+import type { DrinkData } from '@/types/product'
 
-import useDrinkModal from '@/components/modals/DrinkModal/useDrinkModal'
-import DrinkModal from '@/components/modals/DrinkModal/DrinkModal.vue'
-import DrinkCharacteristics from '../DrinkCharacteristics/DrinkCharacteristics.vue'
+import { useDrinkModal, DrinkModal } from '@/components/modals/DrinkModal'
+import DrinkCharacteristics from '../DrinkCharacteristics'
 
 defineProps({
   drink: {

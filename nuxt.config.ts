@@ -1,5 +1,8 @@
 export default defineNuxtConfig({
   ssr: false,
+  alias: {
+    '@': '/<srcDir>',
+  },
   css: [
     '@/assets/main.scss',
     'vuetify/lib/styles/main.sass',

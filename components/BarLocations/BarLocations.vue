@@ -6,8 +6,7 @@
       color="teal"
       text-color="white"
     >
-      <v-icon v-if="location === 0" icon="mdi-glass-mug-variant" class="mr-1" />
-      <v-icon v-if="location === 1" icon="mdi-car-back" class="mr-1" />
+      <v-icon :icon="availableLocations[location].icon" class="mr-1" />
 
       {{ getLocation(location) }}
     </v-chip>
@@ -15,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { locations as drinkLocations } from '@/services/drink'
+import { availableLocations } from '@/services/product'
 
 defineProps({
   locations: {
@@ -25,7 +24,7 @@ defineProps({
 })
 
 const getLocation = (location: number) =>
-  drinkLocations[location as keyof typeof drinkLocations]
+  availableLocations[location as keyof typeof availableLocations]
 </script>
 
 <style lang="scss" src="./BarLocations.scss"></style>

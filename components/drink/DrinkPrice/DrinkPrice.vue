@@ -6,13 +6,13 @@
         {{ priceWithDiscount }}
       </div>
 
-      <div class="drink-price__without">{{ priceLittleSize }} ₽</div>
+      <div class="drink-price__without">{{ price }} ₽</div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { getPriceWithDiscount } from '@/services/drink'
+import { getPriceWithDiscount } from '@/services/product'
 
 const props = defineProps({
   inStock: {
@@ -23,7 +23,7 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
-  priceLittleSize: {
+  price: {
     type: Number,
     default: 0,
   },
@@ -34,7 +34,7 @@ const priceWithDiscount = computed(() => {
     return 0
   }
 
-  return getPriceWithDiscount(props.priceLittleSize, props.discount)
+  return getPriceWithDiscount(props.price, props.discount)
 })
 </script>
 

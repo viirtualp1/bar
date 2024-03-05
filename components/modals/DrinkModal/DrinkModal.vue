@@ -7,22 +7,22 @@
 
       <v-card-text>
         <div v-if="!drink.inStock" class="drink-card__price">Нет в наличии</div>
-        <div v-else-if="!drink.priceBigSize" class="drink-card__price">
-          {{ drink.priceLittleSize }} ₽
+        <div v-else-if="!drink.price.big" class="drink-card__price">
+          {{ drink.price.small }} ₽
         </div>
 
         <div class="drink-modal__description">{{ drink.description }}</div>
 
         <div
           class="drink-modal__discount"
-          v-if="drink.inStock && drink.discount && drink.priceLittleSize"
+          v-if="drink.inStock && drink.discount && drink.price.small"
         >
           <div class="drink-modal__discount-with drink-card__price">
-            {{ priceLittleWithDiscount }}
+            {{ smallPriceWithDiscount }}
           </div>
 
           <div class="drink-modal__discount-without">
-            {{ drink.priceLittleSize }} ₽
+            {{ drink.price.small }} ₽
           </div>
 
           <span class="drink-modal__size">за 0,33</span>
@@ -30,14 +30,14 @@
 
         <div
           class="drink-modal__discount"
-          v-if="drink.discount && drink.priceBigSize"
+          v-if="drink.discount && drink.price.big"
         >
           <div class="drink-modal__discount-with drink-card__price">
-            {{ priceBigWithDiscount }}
+            {{ bigPriceWithDiscount }}
           </div>
 
           <div class="drink-modal__discount-without">
-            {{ drink.priceBigSize }} ₽
+            {{ drink.price.big }} ₽
           </div>
 
           <span class="drink-modal__size">за 0,5</span>
@@ -55,13 +55,16 @@
 </template>
 
 <script setup lang="ts">
-import { DrinkData } from '@/types/product'
-import { getPriceWithDiscount } from '@/services/drink'
+import { useVModel } from '@vueuse/core'
 
-import ProductModal from '@/components/Product/ProductModal/ProductModal.vue'
+import { type DrinkData } from '@/types/product'
+import { getPriceWithDiscount } from '@/services/product'
+
+import {ProductModal, ProductTitle} from '@/components/Product'
+import {DrinkCharacteristics} from '@/components/Drink'
 
 const props = defineProps({
-  value: {
+  modelValue: {
     type: Boolean,
     default: false,
   },
@@ -72,36 +75,29 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
-  close: () => undefined,
+  'update:modelValue': (_v: boolean) => true,
 })
 
-const currentValue = ref(false)
+const currentValue = useVModel(props, 'modelValue', emit)
 
-const nuxt = useNuxtApp()
-
-watch(
-  () => props.value,
-  () => (currentValue.value = props.value),
-)
-
-const priceLittleWithDiscount = computed(() => {
+const smallPriceWithDiscount = computed(() => {
   if (!props.drink.discount) {
     return 0
   }
 
-  return getPriceWithDiscount(props.drink.priceLittleSize, props.drink.discount)
+  return getPriceWithDiscount(props.drink., props.drink.discount)
 })
 
-const priceBigWithDiscount = computed(() => {
+const bigPriceWithDiscount = computed(() => {
   if (!props.drink.discount) {
     return 0
   }
 
-  return getPriceWithDiscount(props.drink.priceBigSize, props.drink.discount)
+  return getPriceWithDiscount(props.drink.price.big, props.drink.discount)
 })
 
 function close() {
-  emit('close')
+  emit('update:modelValue', false)
 }
 </script>
 

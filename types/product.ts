@@ -1,20 +1,17 @@
-export type ProductType =
-  | 'Drink'
-  | 'Snack'
-  | 'Food'
-  | 'Discount'
-  | 'Services'
-  | 'Boules'
-  | 'Bottle'
+export enum CategoriesType {
+  DRINK = 'drink',
+  BOULES = 'boules',
+  BOTTLE = 'bottle',
+  FOOD = 'food',
+  SNACK = 'snack',
+  DISCOUNT = 'discount',
+  SERVICES = 'services',
+}
 
-export enum ProductEnum {
-  DRINK = 'Drink',
-  SNACK = 'Snack',
-  FOOD = 'Food',
-  DISCOUNT = 'Discount',
-  SERVICES = 'Services',
-  BOULES = 'Boules',
-  BOTTLE = 'Bottle',
+export interface PriceData {
+  small: number
+  big: number
+  default: number
 }
 
 export interface ProductData {
@@ -26,48 +23,38 @@ export interface ProductData {
   locations: number[]
   types: string[]
   inStock: boolean
+  price: PriceData
 }
 
-export type DrinkData = ProductData & {
-  type: ProductEnum.DRINK
-  priceLittleSize: number
-  priceBigSize: number
+export interface DrinkData extends ProductData {
   density?: number
   strength?: number
 }
 
-export type BoulesDrink = ProductData & {
-  type: ProductEnum.BOULES
-  priceLittleSize: number
-  priceBigSize: number
-  density?: number
-  strength?: number
+export interface BeerData extends DrinkData {
+  type: CategoriesType.DRINK
 }
 
-export type BottleDrink = ProductData & {
-  type: ProductEnum.BOTTLE
-  priceLittleSize: number
-  priceBigSize: number
-  density?: number
-  strength?: number
+export interface BoulesDrink extends DrinkData {
+  type: CategoriesType.BOULES
 }
 
-export type SnackData = ProductData & {
-  type: ProductEnum.SNACK
-  price: number
+export interface BottleDrink extends DrinkData {
+  type: CategoriesType.BOTTLE
 }
 
-export type FoodData = ProductData & {
-  type: ProductEnum.FOOD
-  price: number
+export interface SnackData extends ProductData {
+  type: CategoriesType.SNACK
 }
 
-export type DiscountData = ProductData & {
-  type: ProductEnum.DISCOUNT
-  price: number
+export interface FoodData extends ProductData {
+  type: CategoriesType.FOOD
 }
 
-export type ServiceData = ProductData & {
-  type: ProductEnum.SERVICES
-  price: number
+export interface DiscountData extends ProductData {
+  type: CategoriesType.DISCOUNT
+}
+
+export interface ServiceData extends ProductData {
+  type: CategoriesType.SERVICES
 }

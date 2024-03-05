@@ -6,7 +6,7 @@
         :key="idx"
         rounded
         @click="updateFilter(filter.value)"
-        :variant="filterVariant(filter.value)"
+        :variant="getButtonVariant(filter.value)"
       >
         {{ filter.text }}
       </v-btn>
@@ -42,7 +42,7 @@ function updateFilter(filter: string) {
   emit('update:filter', filter)
 }
 
-function filterVariant(filter: string) {
+function getButtonVariant(filter: string) {
   return props.currentFilter === filter ? 'elevated' : 'outlined'
 }
 </script>

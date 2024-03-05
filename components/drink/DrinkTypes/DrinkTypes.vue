@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { types as drinkTypes } from '@/services/drink'
+import { DrinkCategories } from '@/services/product'
 
 defineProps({
   types: {
@@ -21,7 +21,8 @@ defineProps({
   },
 })
 
-const getType = (type: string) => drinkTypes[type as keyof typeof drinkTypes]
+const getType = (type: string) =>
+  DrinkCategories[type as keyof typeof DrinkCategories]
 </script>
 
 <style lang="scss" src="./DrinkTypes.scss"></style>

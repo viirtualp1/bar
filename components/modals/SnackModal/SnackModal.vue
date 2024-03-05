@@ -38,14 +38,15 @@
 </template>
 
 <script setup lang="ts">
-import { SnackData } from '@/types/product'
-import { locations } from '@/services/drink'
+import { useVModel } from '@vueuse/core'
 
-import ProductTitle from '@/components/Product/ProductTitle/ProductTitle.vue'
-import ProductModal from '@/components/Product/ProductModal/ProductModal.vue'
+import { getLocation } from '@/services/product'
+import type { SnackData } from '@/types/product'
+
+import { ProductTitle, ProductModal } from '@/components/Product'
 
 const props = defineProps({
-  value: {
+  modelValue: {
     type: Boolean,
     default: false,
   },
@@ -56,21 +57,10 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
-  close: () => undefined,
+  'update:modelValue': () => true,
 })
 
-const currentValue = ref(false)
-
-watch(
-  () => props.value,
-  () => {
-    emit('close')
-    currentValue.value = props.value
-  },
-)
-
-const getLocation = (location: number) =>
-  locations[location as keyof typeof locations]
+const currentValue = useVModel(props, 'modelValue', emit)
 </script>
 
 <style lang="scss" src="./SnackModal.scss"></style>

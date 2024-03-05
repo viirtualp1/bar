@@ -1,16 +1,16 @@
 <template>
   <v-card-text class="drink-characteristics">
     <drink-price
-      v-if="drink.priceLittleSize"
+      v-if="drink.price.small"
       :discount="drink.discount"
       :in-stock="drink.inStock"
-      :price-little-size="drink.priceLittleSize"
+      :price="drink.price.small"
     />
     <div v-else class="drink-characteristics__price">
-      {{ drink.priceLittleSize }} ₽
+      {{ drink.price.default }} ₽
     </div>
 
-    <div class="drink-characteristics__description">
+    <div v-if="drink.description" class="drink-characteristics__description">
       {{ truncate(drink.description) }}
     </div>
 
@@ -30,11 +30,10 @@
 </template>
 
 <script setup lang="ts">
-import { DrinkData } from '@/types/product'
+import type { DrinkData } from '@/types/product'
 import { truncate } from '@/utils/text'
 
-import DrinkTypes from '@/components/Drink/DrinkTypes/DrinkTypes.vue'
-import DrinkPrice from '@/components/Drink/DrinkPrice/DrinkPrice.vue'
+import { DrinkTypes, DrinkPrice } from '@/components/Drink'
 
 defineProps({
   drink: {

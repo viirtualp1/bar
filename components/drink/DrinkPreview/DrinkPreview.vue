@@ -4,7 +4,7 @@
       <h2>{{ drink.name }}</h2>
 
       <v-chip color="success" class="drink-preview__price" size="2">
-        {{ drink.price }} ₽
+        {{ drink.price.default }} ₽
       </v-chip>
     </div>
 
@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { DrinkData } from '~/types/product'
+import type { DrinkData } from '@/types/product'
 
 defineProps({
   drink: {

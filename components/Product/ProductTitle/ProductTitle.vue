@@ -18,4 +18,4 @@ function close() {
 }
 </script>
 
-<style lang="scss" src="ProductTitle.scss"></style>
+<style lang="scss" src="./ProductTitle.scss"></style>

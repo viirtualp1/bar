@@ -1,5 +1,4 @@
-import { Ref } from 'vue'
-import { SnackData, DrinkData } from '@/types/product'
+import type { SnackData, DrinkData } from '@/types/product'
 
 export default function useFilteredProducts(
   drinks: Ref<DrinkData[]>,
@@ -8,9 +7,7 @@ export default function useFilteredProducts(
   const products = computed(() => [...drinks.value, ...snacks.value])
 
   const discountProducts = computed(() => {
-    return products.value.filter((product) => {
-      return Boolean(product.discount)
-    })
+    return products.value.filter((product) => Boolean(product.discount))
   })
 
   return {
